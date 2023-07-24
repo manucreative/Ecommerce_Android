@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/cerial4"
+    tools:context=".CartActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="32sp"-->
+<!--        android:text="NO PLACED ORDER YET"-->
+<!--        android:textStyle="bold"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:background="@drawable/round_border"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="32sp"-->
+<!--        android:text="please do"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginTop="60dp"-->
+<!--        android:background="@drawable/round_border"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyler_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_place_order"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:drawableEnd="@drawable/submit_icon"
+        android:drawablePadding="8dp"
+        android:elevation="20dp"
+        android:fontFamily="@font/magnifika"
+        android:padding="20dp"
+        android:text="Place order"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</RelativeLayout>

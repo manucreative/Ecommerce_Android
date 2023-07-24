@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Maggie</string>
+    <string name="edt_name">Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="brachHeader"><u>OUR BRANCHES COUNTRY WIDE</u></string>
+    <string name="AllProducts"><u>Exclusive products</u></string>
+</resources>
