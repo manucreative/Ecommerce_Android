@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,23 +50,36 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    SessionManager sessionManager;
+//    SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_details);
 
-        sessionManager = new SessionManager(this);
+//        sessionManager = new SessionManager(this);
         mService = Common.getAPI();
-
         image_food = (ImageView) findViewById(R.id.image_food);
         food_name = (TextView) findViewById(R.id.food_name);
         food_price = (TextView) findViewById(R.id.food_price);
         food_description = (TextView) findViewById(R.id.food_description);
         number_button = (ElegantNumberButton) findViewById(R.id.number_button);
-        btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
-        addCart = (Button) findViewById(R.id.addCart);
+        //btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+        addCart = (Button) findViewById(R.id.btnCart);
 
+        TextView txtCartIcon = findViewById(R.id.cart_qty);
+        Common.cartRepository.getCartItemsLiveData().observe(this, cartItems-> {
+            int totalQty = Common.cartRepository.getCountItems();
+            txtCartIcon.setText(String.valueOf(totalQty));
+        });
+        FloatingActionButton float_cart = findViewById(R.id.icon_cart);
+        float_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FoodDetailsActivity.this, CartActivity.class);
+                startActivity(intent);
+                Animatoo.animateFade(FoodDetailsActivity.this);
+            }
+        });
 
         Glide.with(this).load(Common.currentProduct.link).placeholder(R.drawable.aab).into(image_food);
 
@@ -86,12 +101,12 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 showAddToCartDialog(number_button.getNumber());
             }
         });
-        btnCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAddToCartDialog(number_button.getNumber());
-            }
-        });
+//        btnCart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showAddToCartDialog(number_button.getNumber());
+//            }
+//        });
 
     }
 

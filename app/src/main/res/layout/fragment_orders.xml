@@ -23,6 +23,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="end">
 
+        <include
+            layout="@layout/header_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <include
             android:id="@+id/layout_side_menu"
@@ -31,10 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="170dp"/>
 
-        <include
-            layout="@layout/header_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
 
     </com.google.android.material.navigation.NavigationView>

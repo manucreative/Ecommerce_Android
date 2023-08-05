@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layoutOne"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorAccent"
+                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed">
+
+                <RelativeLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="55dp"
+                    android:background="@drawable/my_cart_icon">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="3"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+
+                    <ImageView
+                        android:id="@+id/backIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/baseline_arrow_back_24" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="0dp"
+                        android:drawablePadding="8dp"
+                        android:text="Maggie's grocery"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="24sp" />
+
+                    <ImageView
+                        android:id="@+id/navigationBar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:srcCompat="@drawable/open_drawer"/>
+
+                </RelativeLayout>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolBar1"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/colorWhite"
+                    app:layout_collapseMode="pin"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginRight="16dp"
+                        android:textColorHint="@color/colorGray"
+                        android:drawablePadding="8dp"
+                        android:padding="8dp"
+                        android:focusable="true"
+                        android:drawableLeft="@drawable/search"
+                        android:background="@drawable/round_border"
+                        android:hint="Search Your Products"/>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.Design.NoActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Checkout">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="62dp"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thank you for considering us "
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kindly enter your full details to complete order"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="8dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorBlack"
+            android:hint="Type Your Full Names"
+            android:textColorHint="@color/colorGray"
+            android:inputType="text"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:drawableStart="@drawable/email"
+            android:drawablePadding="8dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorBlack"
+            android:hint="Type your valid Email"
+            android:textColorHint="@color/colorGray"
+            android:inputType="textEmailAddress"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/edit_phone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:drawableStart="@drawable/phone"
+            android:drawablePadding="8dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorBlack"
+            android:hint="Type Your Pnone No."
+            android:textColorHint="@color/colorGray"
+            android:inputType="textEmailAddress"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/edit_address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:drawableStart="@drawable/email"
+            android:drawablePadding="8dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorBlack"
+            android:hint="Type your present address"
+            android:textColorHint="@color/colorGray"
+            android:inputType="text"
+            android:padding="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Select your region"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"/>
+
+        <Spinner
+            android:id="@+id/select_r"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:background="@drawable/skip_button" />
+
+        <EditText
+            android:id="@+id/edit_comment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:drawableStart="@drawable/name_icon"
+            android:drawablePadding="8dp"
+            android:elevation="20dp"
+            android:textColor="@color/colorBlack"
+            android:hint="Type your order Comment"
+            android:textColorHint="@color/colorGray"
+            android:inputType="text"
+            android:padding="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What Time will you be available"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/pick_time"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/skip_button"
+            android:backgroundTint="@color/colorLimeGreen"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="pick your arrival time"
+            />
+        <TextView
+            android:id="@+id/showTimeSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="I will be available at: "
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your bill is as follows"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorBlack"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/showVat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Tax/ VAT: "
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/showCartTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total Price in Ksh: "
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btn_place_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:drawableEnd="@drawable/submit_icon"
+        android:padding="10dp"
+        android:text="Submit order"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

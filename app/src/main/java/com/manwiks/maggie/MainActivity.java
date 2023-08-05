@@ -39,18 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static ApiInterface apiInterface;
 
-    SessionManager sessionManager;
+//    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sessionManager = new SessionManager(this);
-
-        /////Hide status bar//////
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        sessionManager = new SessionManager(this);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
@@ -132,16 +128,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(sessionManager.isLogin())
-        {
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-            Animatoo.animateInAndOut(MainActivity.this);
-        }
-        else
-        {
-
-        }
+//        if(sessionManager.isLogin())
+//        {
+//            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+//            startActivity(intent);
+//            finish();
+//            Animatoo.animateInAndOut(MainActivity.this);
+//        }
+//        else
+//        {
+//
+//        }
     }
 }

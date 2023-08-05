@@ -33,7 +33,6 @@ public abstract class MaggieRoomDatabase extends RoomDatabase {
     private static MaggieRoomDatabase instance;
 
     public static MaggieRoomDatabase getInstance(Context context) {
-
         if(instance ==null)
             instance = Room.databaseBuilder(context,MaggieRoomDatabase.class,"Maggie_groceryDB")
                    // .addMigrations(MaggieRoomDatabase.MIGRATION_2_3)

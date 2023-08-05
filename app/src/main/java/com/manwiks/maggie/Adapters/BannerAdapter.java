@@ -41,6 +41,11 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.PlateViewH
         Glide.with(context).load(bannerModel.getBanner_image()).placeholder(R.drawable.my_pic).into(holder.banner_image);
     }
 
+    public void setData(List<BannerModel> newData) {
+        bannerModelList.clear();
+        bannerModelList.addAll(newData);
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
         return bannerModelList.size();

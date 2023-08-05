@@ -7,7 +7,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,15 @@ import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.manwiks.maggie.Adapters.BannerAdapter;
 import com.manwiks.maggie.Adapters.CatAdapter;
 import com.manwiks.maggie.Adapters.DetailsVerticalAdapter;
 import com.manwiks.maggie.Adapters.GreatOffersAdapter;
 import com.manwiks.maggie.CartActivity;
+import com.manwiks.maggie.Database.Local.CartDAO;
+import com.manwiks.maggie.Database.ModelDB.Cart;
 import com.manwiks.maggie.MainActivity;
 import com.manwiks.maggie.Models.BannerModel;
 import com.manwiks.maggie.Models.CategoryModel;
@@ -33,11 +38,17 @@ import com.manwiks.maggie.OperationRetrofit.ApiClient;
 import com.manwiks.maggie.OperationRetrofit.ApiInterface;
 import com.manwiks.maggie.OperationRetrofit.Users;
 import com.manwiks.maggie.R;
+import com.manwiks.maggie.RetroTwo.Common;
 import com.manwiks.maggie.Sessions.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.LogRecord;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,9 +106,10 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
     NavigationView navigationView;
     private View view;
     private RelativeLayout  relativeLayout3Bookmarks, relativeLayout4Earnings;
-    private TextView your_orders, favorite_orders, address, online_order_help, send_feedback, report_safety, rate_us, contact_us, logout;
+    private TextView your_orders, favorite_orders, address, online_order_help, send_feedback, report_safety, rate_us, contact_us, logout, txtCartIcon;
+    CompositeDisposable compositeDisposable;
 
-    SessionManager sessionManager;
+   // SessionManager sessionManager;
 
     public static ApiInterface apiInterface;
 
@@ -107,12 +119,17 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
     private CatAdapter catAdapter;
     private List<CategoryModel> categoryModelList;
     ///////category slider end////////////
-
     /////////////////banner slider start///////////////////
 
-    private RecyclerView recyclerViewBanner;
+    private ViewPager2 viewPagerBanner;
     private BannerAdapter bannerAdapter;
     private  List<BannerModel> bannerModelList;
+    int currentPage = 0;
+    Timer timer;
+    final long DELAY_MS = 3000; // Delay between auto-scrolling (3 seconds in this case)
+    final long PERIOD_MS = 6000; // Time period of auto-scrolling (10 seconds in this case)
+    FloatingActionButton float_cart;
+
     //////////////////banner slider end////////////////////
 
     //////////Details Vertical start//////////////
@@ -156,13 +173,28 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.fragment_orders, container, false);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        compositeDisposable = new CompositeDisposable();
 
-        sessionManager = new SessionManager(getContext());
+       // sessionManager = new SessionManager(getContext());
 
         onSetNavigationDrawerEvents();
         init();
-        return view;
+        txtCartIcon = view.findViewById(R.id.cart_qty);
+        Common.cartRepository.getCartItemsLiveData().observe(this, cartItems->{
+            int totalQty = Common.cartRepository.getCountItems();
+            txtCartIcon.setText(String.valueOf(totalQty));
+        });
 
+        float_cart = view.findViewById(R.id.float_cart);
+        float_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CartActivity.class);
+                startActivity(intent);
+                Animatoo.animateFade(getActivity());
+            }
+        });
+        return view;
 
     }
 //////////category model/////////
@@ -183,8 +215,7 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
 
             }
         });
-        //////////////////Strip Banners end///////////////////////////
-
+        ////////////////// Banners end///////////////////////////
         recyclerViewCategory = (RecyclerView)view.findViewById(R.id.recyclerViewCategory);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
       layoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -196,11 +227,11 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         categoryCall.enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
-
                 categoryModelList = response.body().getCategory();
                 catAdapter = new CatAdapter(categoryModelList,getContext());
                 recyclerViewCategory.setAdapter(catAdapter);
                 catAdapter.notifyDataSetChanged();
+                autoScroll();
             }
 
             @Override
@@ -211,35 +242,30 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         //////////category model////////////////
        /*==========================================================================================*/
 
-
         //////////banner model////////////////
-
-        recyclerViewBanner = (RecyclerView)view.findViewById(R.id.recyclerViewBanner);
-        LinearLayoutManager layoutManagerBanner = new LinearLayoutManager(getContext());
-        layoutManagerBanner.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerViewBanner.setLayoutManager(layoutManagerBanner);
-
-
+        viewPagerBanner = view.findViewById(R.id.viewPagerBanner);
         bannerModelList = new ArrayList<>();
+        bannerAdapter = new BannerAdapter(bannerModelList, getContext());
+        viewPagerBanner.setAdapter(bannerAdapter);
+        startAutoScroll();
+
         Call<Users> bannerCall = apiInterface.getBanner();
         bannerCall.enqueue(new Callback<Users>() {
             @Override
-            public void onResponse(Call<Users> bannerCall, Response<Users> response) {
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful()) {
+                    bannerModelList = response.body().getBanner();
+                    bannerAdapter.setData(bannerModelList);
+                    bannerAdapter.notifyDataSetChanged();
 
-                bannerModelList = response.body().getBanner();
-                bannerAdapter = new BannerAdapter(bannerModelList,getContext());
-                recyclerViewBanner.setAdapter(bannerAdapter);
-
-                bannerAdapter.notifyDataSetChanged();
+                }
             }
-
             @Override
             public void onFailure(Call<Users> bannerCall, Throwable t) {
-
             }
         });
 
-        ////////////banner model////////
+        ////////////banner model end////////
 /*====================================================================================================*/
 
         ///////////Details Vertical view///////////////////
@@ -409,12 +435,55 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         ////////////exclusive Vertical view end/////////////////
     }
 
+    public void autoScroll() {
+        final int speedScroll = 2500;
+        final Handler handle = new Handler();
+        final Runnable runnable = new Runnable() {
+            int count = 0;
+            int direction = 1; // 1 for forward, -1 for backward
+
+            @Override
+            public void run() {
+                if (count >= catAdapter.getItemCount() - 1) {
+                    direction = -1; // Change direction to scroll backward
+                } else if (count <= 0) {
+                    direction = 1; // Change direction to scroll forward
+                }
+
+                count += direction;
+
+                recyclerViewCategory.smoothScrollToPosition(count);
+                handle.postDelayed(this, speedScroll);
+            }
+        };
+        handle.postDelayed(runnable, speedScroll);
+    }
+
+    private void startAutoScroll() {
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            public void run() {
+                if (currentPage == bannerModelList.size()) {
+                    currentPage = 0;
+                }
+                viewPagerBanner.setCurrentItem(currentPage++, true);
+            }
+        };
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, DELAY_MS, PERIOD_MS);
+    }
+
     private void onSetNavigationDrawerEvents() {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         navigationView = (NavigationView) view.findViewById(R.id.navigationView);
 
         navigationBar = (ImageView) view.findViewById(R.id.navigationBar);
-        add_to_cart = (ImageView)view.findViewById(R.id.icon_cart);
+    //    add_to_cart = (ImageView)view.findViewById(R.id.icon_cart);
 
 
 
@@ -431,7 +500,7 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         rate_us = (TextView) view.findViewById(R.id.rate_us);
         contact_us = (TextView) view.findViewById(R.id.contact_us);
 
-        add_to_cart.setOnClickListener(this);
+//        add_to_cart.setOnClickListener(this);
         navigationBar.setOnClickListener(this);
         logout.setOnClickListener(this);
         relativeLayout3Bookmarks.setOnClickListener(this);
@@ -452,14 +521,14 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.icon_cart:
-              Intent intent = new Intent(getActivity(),CartActivity.class);
-                 startActivity(intent);
+//              Intent intent = new Intent(getActivity(),CartActivity.class);
+//                 startActivity(intent);
 
             case R.id.navigationBar:
                 drawerLayout.openDrawer(navigationView, true);
                 break;
             case R.id.logOut:
-                logOut();
+                //logOut();
                 break;
             case R.id.relativeLayout3:
                 Toast.makeText(getContext(), "Bookmarks", Toast.LENGTH_SHORT).show();
@@ -495,29 +564,41 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
         }
     }
     
-    private void logOut() {
-        sessionManager.editor.clear();
-        sessionManager.editor.commit();
-
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-        Animatoo.animateInAndOut(getContext());
-    }
+//    private void logOut() {
+//        sessionManager.editor.clear();
+//        sessionManager.editor.commit();
+//
+//        Intent intent = new Intent(getContext(), MainActivity.class);
+//        startActivity(intent);
+//        getActivity().finish();
+//        Animatoo.animateInAndOut(getContext());
+//    }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(!sessionManager.isLogin())
-        {
-
-            sessionManager.editor.clear();
-            sessionManager.editor.commit();
-
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-            Animatoo.animateInAndOut(getContext());
+//        if(!sessionManager.isLogin())
+//        {
+//
+//            sessionManager.editor.clear();
+//            sessionManager.editor.commit();
+//
+//            Intent intent = new Intent(getContext(), MainActivity.class);
+//            startActivity(intent);
+//            getActivity().finish();
+//            Animatoo.animateInAndOut(getContext());
+//        }
         }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopAutoScroll();
+    }
+
+    private void stopAutoScroll() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
+    }
     }

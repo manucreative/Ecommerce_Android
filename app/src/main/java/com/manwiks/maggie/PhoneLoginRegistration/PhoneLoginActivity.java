@@ -64,10 +64,6 @@ public class PhoneLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_login);
 
-        /////Hide status bar//////
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         mAuth = FirebaseAuth.getInstance();
 

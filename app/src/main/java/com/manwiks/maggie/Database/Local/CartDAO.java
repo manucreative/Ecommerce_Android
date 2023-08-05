@@ -2,6 +2,7 @@ package com.manwiks.maggie.Database.Local;
 
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -35,7 +36,10 @@ Flowable<List<Cart>> getCartItems();
 
     @Query("DELETE FROM Cart")
     void emptyCart();
-
+    @Query("SELECT COUNT(*) FROM Cart")
+   int getCountItems();
+    @Query("SELECT * FROM Cart")
+    LiveData<List<Cart>> getCartItemsLiveData();
 
     @Insert
     void insertToCart(Cart...carts);

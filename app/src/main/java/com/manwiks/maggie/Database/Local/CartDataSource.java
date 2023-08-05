@@ -1,5 +1,7 @@
 package com.manwiks.maggie.Database.Local;
 
+import androidx.lifecycle.LiveData;
+
 import com.manwiks.maggie.Database.DataSource.MCartDataSource;
 import com.manwiks.maggie.Database.ModelDB.Cart;
 
@@ -31,6 +33,9 @@ public class CartDataSource implements MCartDataSource {
     public Flowable<List<Cart>> getCartItemById(int cartItemId) {
         return cartDAO.getCartItemById(cartItemId);
     }
+    public LiveData<List<Cart>> getCartItemsLiveData(){
+        return cartDAO.getCartItemsLiveData();
+    }
     @Override
     public void deleteCartById(int cartItemId) {
         cartDAO.deleteCartById(cartItemId);
@@ -39,6 +44,9 @@ public class CartDataSource implements MCartDataSource {
     @Override
     public void emptyCart() {
          cartDAO.emptyCart();
+    }
+    public int getCountItems(){
+       return cartDAO.getCountItems();
     }
 
     @Override

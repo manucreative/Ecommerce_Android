@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,8 +43,6 @@ public class EmailLogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_log_in);
 
-        /////Hide status bar//////
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         sessionManager = new SessionManager(this);
@@ -114,6 +111,7 @@ public class EmailLogInActivity extends AppCompatActivity {
                         user_id = response.body().getUserId();
                         sessionManager.createSession(user_id);
                         Intent intent = new Intent(EmailLogInActivity.this, HomeActivity.class);
+                        intent.putExtra("startFragment", "orders");
                         startActivity(intent);
                         finish();
                         Animatoo.animateInAndOut(EmailLogInActivity.this);

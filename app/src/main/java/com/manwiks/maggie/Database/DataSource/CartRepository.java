@@ -1,5 +1,7 @@
 package com.manwiks.maggie.Database.DataSource;
 
+import androidx.lifecycle.LiveData;
+
 import com.manwiks.maggie.Database.ModelDB.Cart;
 
 import java.util.List;
@@ -31,12 +33,23 @@ public class CartRepository implements MCartDataSource{
     }
 
     @Override
+    public LiveData<List<Cart>> getCartItemsLiveData() {
+        return mCartDataSource.getCartItemsLiveData();
+    }
+
+    @Override
     public void emptyCart() {
        mCartDataSource.emptyCart();
     }
     @Override
     public void deleteCartById(int cartItemId){
         mCartDataSource.deleteCartById(cartItemId);
+    }
+
+    @Override
+    public int getCountItems() {
+        return mCartDataSource.getCountItems();
+
     }
 
     @Override

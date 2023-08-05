@@ -15,13 +15,14 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         /////Hide status bar//////
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      // getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         ///handler
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashScreen.this,MainActivity.class);
+                    Intent intent = new Intent(SplashScreen.this,HomeActivity.class);
+                    intent.putExtra("startFragment", "orders");
                     startActivity(intent);
                     finish();
                 }

@@ -42,8 +42,6 @@ public class EmailRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_register);
-        /////Hide status bar//////
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         sessionManager = new SessionManager(this);
@@ -115,6 +113,7 @@ public class EmailRegisterActivity extends AppCompatActivity {
                         user_id = response.body().getUserId();
                         sessionManager.createSession(user_id);
                         Intent intent = new Intent(EmailRegisterActivity.this, HomeActivity.class);
+                        intent.putExtra("startFragment", "orders");
                         startActivity(intent);
                         finish();
                         Animatoo.animateInAndOut(EmailRegisterActivity.this);

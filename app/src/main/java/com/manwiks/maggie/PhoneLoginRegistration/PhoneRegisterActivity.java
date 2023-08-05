@@ -63,9 +63,6 @@ private ImageButton imageButton4;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_register);
 
-        /////Hide status bar//////
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         mAuth = FirebaseAuth.getInstance();
         sessionManager = new SessionManager(this);

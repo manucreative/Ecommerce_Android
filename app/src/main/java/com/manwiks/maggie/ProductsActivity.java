@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.manwiks.maggie.Adapters.ProductsAdapter;
 import com.manwiks.maggie.Models.NewProductsModel;
 import com.manwiks.maggie.Models.RegionsModel;
@@ -33,10 +37,11 @@ public class ProductsActivity extends AppCompatActivity {
     TextView cat_name;
     ImageView cat_image;
     GroceryShopAPI mService;
+    private FloatingActionButton float_cart;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    SessionManager sessionManager;
+//    SessionManager sessionManager;
 
 
     @Override
@@ -44,20 +49,33 @@ public class ProductsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
-        sessionManager = new SessionManager(this);
+//        sessionManager = new SessionManager(this);
         mService = Common.getAPI();
 
         cat_name = (TextView) findViewById(R.id.catTitle);
         cat_image = (ImageView) findViewById(R.id.catImg);
 
+        TextView txtCartIcon = findViewById(R.id.cart_qty);
+        Common.cartRepository.getCartItemsLiveData().observe(this, cartItems->{
+            int totalQty = Common.cartRepository.getCountItems();
+            txtCartIcon.setText(String.valueOf(totalQty));
+        });
+        float_cart = findViewById(R.id.icon_cart);
+        float_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductsActivity.this, CartActivity.class);
+                startActivity(intent);
+                Animatoo.animateFade(ProductsActivity.this);
+            }
+        });
+
         Glide.with(this).load(Common.currentCategory.getCat_image()).placeholder(R.drawable.two).into(cat_image);
         cat_name.setText(Common.currentCategory.getCat_title());
 
         recyclerProducts = (RecyclerView)findViewById(R.id.recyclerProducts);
-        int numberOfColumns = 1;
+        int numberOfColumns = 2;
         recyclerProducts.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-
-
 
         init(Common.currentCategory.getCat_id());
 

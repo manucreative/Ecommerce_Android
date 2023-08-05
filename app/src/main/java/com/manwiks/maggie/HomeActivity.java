@@ -41,6 +41,23 @@ public class HomeActivity extends AppCompatActivity {
         ///initialize database
         onitDB();
 
+        // Check if the intent has a flag indicating which fragment to start with
+        String startFragment = getIntent().getStringExtra("startFragment");
+        if (startFragment != null) {
+            // Start the corresponding fragment based on the flag
+            switch (startFragment) {
+                case "orders":
+                    // Switch to the OrdersFragment
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,
+                            new OrdersFragment()).commit();
+                    break;
+                // Handle other fragments if needed
+            }
+        }else{
+            // start with the OrdersFragment by default
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout,
+                    new OrdersFragment()).commit();
+        }
     }
 
     private void onitDB() {

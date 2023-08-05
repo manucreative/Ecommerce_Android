@@ -73,7 +73,7 @@ public class GoldFragment extends Fragment implements View.OnClickListener{
     private RelativeLayout relativeLayout3Bookmarks, relativeLayout4Earnings;
     private TextView your_orders, favorite_orders, address, online_order_help, send_feedback, report_safety, rate_us, contact_us, logout;
 
-    SessionManager sessionManager;
+//    SessionManager sessionManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +81,7 @@ public class GoldFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_gold, container, false);
 
-        sessionManager = new SessionManager(getContext());
+//        sessionManager = new SessionManager(getContext());
         onSetNavigationDrawerEvents();
         return view;
     }
@@ -131,7 +131,7 @@ public class GoldFragment extends Fragment implements View.OnClickListener{
                 drawerLayout.openDrawer(navigationView, true);
                 break;
             case R.id.logOut:
-                logOut();
+//                logOut();
                 break;
             case R.id.relativeLayout3:
                 Toast.makeText(getContext(), "Bookmarks", Toast.LENGTH_SHORT).show();
@@ -167,30 +167,30 @@ public class GoldFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void logOut() {
-        sessionManager.editor.clear();
-        sessionManager.editor.commit();
-
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-        Animatoo.animateInAndOut(getContext());
-    }
+//    private void logOut() {
+//        sessionManager.editor.clear();
+//        sessionManager.editor.commit();
+//
+//        Intent intent = new Intent(getContext(), MainActivity.class);
+//        startActivity(intent);
+//        getActivity().finish();
+//        Animatoo.animateInAndOut(getContext());
+//    }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(!sessionManager.isLogin())
-        {
-
-            sessionManager.editor.clear();
-            sessionManager.editor.commit();
-
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-            Animatoo.animateInAndOut(getContext());
-        }
+//        if(!sessionManager.isLogin())
+//        {
+//
+//            sessionManager.editor.clear();
+//            sessionManager.editor.commit();
+//
+//            Intent intent = new Intent(getContext(), MainActivity.class);
+//            startActivity(intent);
+//            getActivity().finish();
+//            Animatoo.animateInAndOut(getContext());
+//        }
     }
 
 }

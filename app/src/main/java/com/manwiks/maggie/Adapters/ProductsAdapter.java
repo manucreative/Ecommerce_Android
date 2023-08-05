@@ -1,9 +1,11 @@
 package com.manwiks.maggie.Adapters;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +20,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.gson.Gson;
+import com.manwiks.maggie.CartActivity;
+import com.manwiks.maggie.Checkout;
 import com.manwiks.maggie.Database.ModelDB.Cart;
 import com.manwiks.maggie.FoodDetailsActivity;
+import com.manwiks.maggie.HomeActivity;
 import com.manwiks.maggie.Interface.ItemClickListener;
 import com.manwiks.maggie.Models.BrandsModel;
 import com.manwiks.maggie.Models.NewProductsModel;
@@ -365,8 +371,37 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsViewHolder> {
                     cartItem.link = newProductsModelList.get(position).link;
 
                     Common.cartRepository.insertToCart(cartItem);
-                    Log.d("Maggie_Debug", new Gson().toJson(cartItem));
-                    Toast.makeText(context, "Save Item to cart succeeded", Toast.LENGTH_SHORT).show();
+                   // Log.d("Maggie_Debug", new Gson().toJson(cartItem));
+                    Handler handler = new Handler();
+                    ProgressDialog progressDialog = new ProgressDialog(context);
+                    progressDialog.setMessage("Please Wait...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            androidx.appcompat.app.AlertDialog.Builder myBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+                            myBuilder.setTitle("One Product Added to Cart");
+                            View itemView = LayoutInflater.from(context).inflate(R.layout.success_added_to_cart_layout, null);
+                            myBuilder.setView(itemView);
+
+                            myBuilder.setNegativeButton("CONTINUE SHOPPING", null);
+
+                            myBuilder.setPositiveButton("GO TO MY CART", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent myIntent = new Intent(context, CartActivity.class);
+                                    context.startActivity(myIntent);
+                                    Animatoo.animateSlideLeft(context);
+                                }
+                            });
+                            androidx.appcompat.app.AlertDialog myDialog = myBuilder.create();
+                            myDialog.setCanceledOnTouchOutside(false);
+                            myDialog.show();
+                        }
+                    }, 5000);
+
                 } catch (Exception e) {
                     Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
