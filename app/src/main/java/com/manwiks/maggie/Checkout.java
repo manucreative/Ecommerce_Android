@@ -2,6 +2,7 @@ package com.manwiks.maggie;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -19,17 +20,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.manwiks.maggie.Database.ModelDB.Cart;
+import com.manwiks.maggie.ManageDrawer.AboutUs;
+import com.manwiks.maggie.ManageDrawer.ContactUs;
+import com.manwiks.maggie.ManageDrawer.CustomerFavorites;
+import com.manwiks.maggie.ManageDrawer.CustomerFeedback;
+import com.manwiks.maggie.ManageDrawer.CustomerOders;
+import com.manwiks.maggie.ManageDrawer.OrderHelp;
+import com.manwiks.maggie.ManageDrawer.RateUs;
+import com.manwiks.maggie.ManageDrawer.ReportEmergency;
+import com.manwiks.maggie.ManageDrawer.UserProfile;
 import com.manwiks.maggie.Models.RegionsModel;
 import com.manwiks.maggie.RetroTwo.Common;
 import com.manwiks.maggie.Retrofit.GroceryShopAPI;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Checkout extends AppCompatActivity {
+public class Checkout extends AppCompatActivity implements View.OnClickListener{
 
     EditText edit_name, edit_email, edt_comment, edt_other_address, edt_phone;
     Spinner select_reg;
@@ -57,10 +72,37 @@ public class Checkout extends AppCompatActivity {
     List<String> defaultRegionNames;
     private RegionsModel selectedRegions;
     String selectedRegionName, selectedDateTime;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ImageView navigationBar;
+    private RelativeLayout relativeLayout3Bookmarks, relativeLayout4Earnings;
+    private TextView your_orders, favorite_orders, address, online_order_help, send_feedback, report_safety, rate_us, contact_us, logout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+        // back Press for top part
+        ImageView backIcon = findViewById(R.id.backIcon);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Call the default back behavior
+            }
+        });
+        // back Press for top part end
+        // Data Side bar Expandable
+        ExpandableLayout expandableLayout = (ExpandableLayout) findViewById(R.id.expandableLayout);
+        ImageView rightArrow = (ImageView) findViewById(R.id.right_arrow);
+        RelativeLayout titleLayout = (RelativeLayout) findViewById(R.id.myRelativeLayout);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableLayout.toggle();
+                rightArrow.setRotation(expandableLayout.isExpanded() ? 90 : 0);
+            }
+        });
+        // Data Side bar Expandable end
         compositeDisposable = new CompositeDisposable();
         mService = Common.getAPI();
                                 submitOrder = findViewById(R.id.btn_place_order);
@@ -182,6 +224,7 @@ public class Checkout extends AppCompatActivity {
                                 showVat.setText(new StringBuilder("Tax/VAT: ").append(Common.cartRepository.sumVat()));
                                 showCartTotal.setText(new StringBuilder("Total Bill: ").append(Common.cartRepository.sumPricePlusTax()));
 
+        onSetNavigationDrawerEvents();
     } // onCreate end tag
     public void PlaceOrder() {
         String orderComments = edt_comment.getText().toString();
@@ -284,5 +327,108 @@ public class Checkout extends AppCompatActivity {
         compositeDisposable.clear();
         super.onStop();
     }
+    private void onSetNavigationDrawerEvents() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationBar = (ImageView) findViewById(R.id.navigationBar);
+        //    add_to_cart = (ImageView)view.findViewById(R.id.icon_cart);
 
+
+
+        logout = (TextView) findViewById(R.id.logOut);
+        relativeLayout3Bookmarks = (RelativeLayout) findViewById(R.id.relativeLayout3);
+        relativeLayout4Earnings = (RelativeLayout) findViewById(R.id.relativeLayout4);
+
+        your_orders = (TextView) findViewById(R.id.your_orders);
+        favorite_orders = (TextView) findViewById(R.id.favorite_orders);
+        address = (TextView) findViewById(R.id.address);
+        online_order_help = (TextView) findViewById(R.id.online_order_help);
+        send_feedback = (TextView) findViewById(R.id.send_feedback);
+        report_safety = (TextView) findViewById(R.id.report_safety);
+        rate_us = (TextView) findViewById(R.id.rate_us);
+        contact_us = (TextView) findViewById(R.id.contact_us);
+
+//        add_to_cart.setOnClickListener(this);
+        navigationBar.setOnClickListener(this);
+        logout.setOnClickListener(this);
+        relativeLayout3Bookmarks.setOnClickListener(this);
+        relativeLayout4Earnings.setOnClickListener(this);
+
+        your_orders.setOnClickListener(this);
+        favorite_orders.setOnClickListener(this);
+        address.setOnClickListener(this);
+        online_order_help.setOnClickListener(this);
+        send_feedback.setOnClickListener(this);
+        report_safety.setOnClickListener(this);
+        rate_us.setOnClickListener(this);
+        contact_us.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.navigationBar:
+                drawerLayout.openDrawer(navigationView, true);
+                break;
+            case R.id.logOut:
+                //logOut();
+                break;
+            case R.id.relativeLayout3:
+                Intent intent1 = new Intent(Checkout.this, AboutUs.class);
+                startActivity(intent1);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.relativeLayout4:
+                Toast.makeText(this, "Earnings", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.your_orders:
+                Intent intent2 = new Intent(Checkout.this, CustomerOders.class);
+                startActivity(intent2);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.favorite_orders:
+                Intent intent3 = new Intent(Checkout.this, CustomerFavorites.class);
+                startActivity(intent3);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.address:
+                Intent intent4 = new Intent(Checkout.this, UserProfile.class);
+                startActivity(intent4);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.online_order_help:
+                Intent intent5 = new Intent(Checkout.this, OrderHelp.class);
+                startActivity(intent5);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.send_feedback:
+                Intent intent6 = new Intent(Checkout.this, CustomerFeedback.class);
+                startActivity(intent6);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.report_safety:
+                Intent intent7 = new Intent(Checkout.this, ReportEmergency.class);
+                startActivity(intent7);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.rate_us:
+                Intent intent8 = new Intent(Checkout.this, RateUs.class);
+                startActivity(intent8);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+            case R.id.contact_us:
+                Intent intent9 = new Intent(Checkout.this, ContactUs.class);
+                startActivity(intent9);
+                finish();
+                Animatoo.animateFade(this);
+                break;
+        }
+    }
 }

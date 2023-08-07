@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,8 @@ import com.manwiks.maggie.OperationRetrofit.Users;
 import com.manwiks.maggie.R;
 import com.manwiks.maggie.RetroTwo.Common;
 import com.manwiks.maggie.Sessions.SessionManager;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +108,7 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
     ImageView navigationBar,strip_banner_image, add_to_cart;
     NavigationView navigationView;
     private View view;
+    ExpandableLayout expandableLayout;
     private RelativeLayout  relativeLayout3Bookmarks, relativeLayout4Earnings;
     private TextView your_orders, favorite_orders, address, online_order_help, send_feedback, report_safety, rate_us, contact_us, logout, txtCartIcon;
     CompositeDisposable compositeDisposable;
@@ -171,6 +175,28 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_orders, container, false);
+
+        // back Press for top part
+        ImageView backIcon = view.findViewById(R.id.backIcon);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().onBackPressed(); // Call the default back behavior
+            }
+        });
+        // back Press for top part end
+        // Data Side bar Expandable
+        expandableLayout = (ExpandableLayout) view.findViewById(R.id.expandableLayout);
+        ImageView rightArrow = (ImageView) view.findViewById(R.id.right_arrow);
+        RelativeLayout titleLayout = (RelativeLayout) view.findViewById(R.id.myRelativeLayout);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableLayout.toggle();
+                rightArrow.setRotation(expandableLayout.isExpanded() ? 90 : 0);
+            }
+        });
+        // Data Side bar Expandable end
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         compositeDisposable = new CompositeDisposable();
@@ -481,8 +507,8 @@ public class OrdersFragment extends Fragment implements View.OnClickListener{
     private void onSetNavigationDrawerEvents() {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerLayout);
         navigationView = (NavigationView) view.findViewById(R.id.navigationView);
-
         navigationBar = (ImageView) view.findViewById(R.id.navigationBar);
+
     //    add_to_cart = (ImageView)view.findViewById(R.id.icon_cart);
 
 

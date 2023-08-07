@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.manwiks.maggie">
-
+    package="com.manwiks.maggie" >
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,23 +9,41 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
         <activity
-            android:name=".Checkout"
+            android:name=".ManageDrawer.AboutUs"
             android:exported="false" />
         <activity
-            android:name=".FoodDetailsActivity"
+            android:name=".ManageDrawer.ContactUs"
+            android:exported="false" />
+        <activity android:name=".ManageDrawer.RateUs" />
+        <activity android:name=".ManageDrawer.ReportEmergency" />
+        <activity
+            android:name=".ManageDrawer.CustomerFeedback"
             android:exported="false" />
         <activity
-            android:name=".CartActivity"
+            android:name=".ManageDrawer.OrderHelp"
             android:exported="false" />
+        <activity
+            android:name=".ManageDrawer.UserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".ManageDrawer.CustomerFavorites"
+            android:exported="false" />
+        <activity
+            android:name=".ManageDrawer.CustomerOders"
+            android:exported="false" />
+        <activity android:name=".Checkout" />
+        <activity
+            android:name=".FoodDetailsActivity"/>
+        <activity android:name=".CartActivity" />
         <activity android:name=".ProductsActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".PhoneLoginRegistration.PhoneRegisterActivity" />
         <activity android:name=".PhoneLoginRegistration.PhoneLoginActivity" />
         <activity android:name=".EmailLogInRegister.EmailRegisterActivity" />
         <activity android:name=".EmailLogInRegister.EmailLogInActivity" />
-        <activity android:name=".SplashScreen">
+        <activity android:name=".SplashScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
