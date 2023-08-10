@@ -1,6 +1,6 @@
 # E-COMMERCE ANDROID PROJECT
 
-#purpose for the app
+## Application Aims and Purpose
    - This project is a fully running-Android application created mainly for local food industries, for example, hotels and cafes, etc.
    - it is mainly used to make a food order for earlier processing.
    - Sweatble for advanced food order-based hotels and takeaway services.
