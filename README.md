@@ -21,14 +21,14 @@
   - Use the USB tethering or Hot-sport for your connection and obtain the relevant connected IP.
  
 # BACKEND AND ANDROID APP PROCESS CONNECTION
-   - User Retrofit and RxJava in Android studio to initiate the connection by implementing the following in **build.gradle.**
+   - Use Retrofit and RxJava in Android studio to initiate the connection by implementing the following in **build.gradle** file.
      
                 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
                 implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
                 implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
                 implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
      
-   - Create the Retrofit instance and pass you back back-end URL with the relevant connected IP.
+   - Create the Retrofit instance and pass your back-end URL with the relevant connected IP.
      ### You can implement the retrofit as follows
 
          Retrofit retrofit = new Retrofit.Builder()
