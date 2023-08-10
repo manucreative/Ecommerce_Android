@@ -32,13 +32,14 @@
      ### You can implement the retrofit as follows
 
          Retrofit retrofit = new Retrofit.Builder()
-          .baseUrl(BASE_URL) // Your API base URL
+          .baseUrl(BASE_URL) // Your API base URL WITH A RELEVANT IP
           .addConverterFactory(GsonConverterFactory.create())
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
           .build();
     ApiService apiService = retrofit.create(ApiService.class);
 
-   - Add Necessary internet permission to manifest.xml file like bellow
+   - Add Necessary internet permission to manifest.xml file like bellow.
+     
            uses-permission android:name="android.permission.INTERNET"
 
      
