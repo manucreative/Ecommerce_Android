@@ -5,7 +5,7 @@
    - it is mainly used to make a food order for earlier processing.
    - Sweatble for advanced food order-based hotels and takeaway services.
     
-# Project Features and Overview
+## Project Features and Overview
 - It is a JAVA-based system and can only run on Android devices like mobile smartphones, tablets, etc.
 - Build with Android studio
 - Connected to MySql database for backend with PHP APIs.
@@ -20,7 +20,7 @@
   - Configure your local server to accept and access the global IP connection.
   - Use the USB tethering or Hot-sport for your connection and obtain the relevant connected IP.
  
-# BACKEND AND ANDROID APP PROCESS CONNECTION
+## BACKEND AND ANDROID APP PROCESS CONNECTION
    - Use Retrofit and RxJava in Android studio to initiate the connection by implementing the following in **build.gradle** file.
      
                 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
